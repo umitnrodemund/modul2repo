@@ -85,3 +85,21 @@ function modeChange() {
     mode == "summer" ? mode = "winter" : mode = "summer"
     updateDisplay();
 }
+
+
+function unittest(){
+    var script = document.createElement('script');
+            
+    // Set the source (URL) of the script file to load
+    script.src = '/public/js/unittest.js';
+
+    // Define a callback function to execute when the script is loaded
+    script.onload = function () {
+        console.log('Starting unit tests...');
+        // Call functions or perform actions from the loaded script here
+        unittest_start();
+    };
+
+    // Append the script element to the document's body
+    document.body.appendChild(script);
+}
