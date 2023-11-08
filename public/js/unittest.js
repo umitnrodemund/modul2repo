@@ -47,8 +47,8 @@ unittest_add("level_button",function(){
 });
 
 
-unittest_add("api_celsius_to_ fahrenheit",async function(){
-    response=await _test_api("/api/fromCelsiusToFahrenheit",{"temperature":18})
+unittest_add("api_celsius_to_fahrenheit",async function(){
+    response=await _test_api("/api/fromCelsiusToFahrenheit",{"temperature":20})
     .then((data) => {
         // Handle the JSON response data
         unittest_assertEqual(data.status,200,"api did not respond with status 200","_api_responding");
@@ -59,7 +59,7 @@ unittest_add("api_celsius_to_ fahrenheit",async function(){
         console.error('Error:', error);
     });	
     data=await response.json();
-    unittest_assertEqual(data.result,32.4,"api call did not return correct result");
+    unittest_assertEqual(data.result,68,"api call did not return correct result");
 });
 unittest_add("api_fahrenheit_to_celsius",async function(){
     response=await _test_api("/api/fromFahrheitToCelsius",{"temperature":32.4})
@@ -77,7 +77,7 @@ unittest_add("api_fahrenheit_to_celsius",async function(){
 });
 
 
-function unittest_start(){
+async function unittest_start(){
     // run each _unittest
     console.log("Unittests registered: "+_unittests.length);
     console.log("Starting...");
@@ -85,7 +85,11 @@ function unittest_start(){
         _unittest_count++;
         _unittest_current=_unittests[i][0];
         _unittest_assert_count=0;
-        _unittests[i][1]();
+        console.log("Running "+_unittest_current+" ("+_unittest_count+"/"+_unittests.length+")");
+
+        await _unittests[i][1]();
+
+       
     }
 }
 function unittest_assertTrue(a, failure_message=undefined,name="") {
@@ -126,9 +130,9 @@ function _unittest_msg(success,errmsg="",name="") {
         name = " " +_unittest_current+"_"+_unittest_assert_count.toString().padStart(4, '0');
     }
     if(success){
-        console.log("(TEST ["+name+"]) [OK] ");
+        console.log("TEST ["+name+"]: [OK] ");
     }else{
-        console.log("(TEST ["+name+"]) [ERROR] "+errmsg);
+        console.log("TEST ["+name+"]: [ERROR] "+errmsg);
     }
 }
 
